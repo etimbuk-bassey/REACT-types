@@ -45,6 +45,8 @@ export default function Users() {
 
   //     return window.removeEventListener("scroll", handleScroll);
   //   }, []);
+// ['john', 'james', 'micheal']
+
 
   useEffect(() => {
     async function getUsers() {
@@ -58,10 +60,10 @@ export default function Users() {
     }
     getUsers().then(
       () => {
-        console.log("ghghgh");
+        console.log();
       },
       () => {
-        console.log("jhjgjgj");
+        console.log();
       }
     );
     // setUsers([]);
@@ -81,7 +83,9 @@ export default function Users() {
       margin: "20px",
       padding: "10px",
       backgroundColor: "white",
-      boxShadow: " 5px 5px 10px #aaaaaa",
+    },
+    "& .card:hover": {
+      boxShadow: " 0px 0px 30px #aaaaaa",
     },
     "& .card .name": {
       padding: "20px",
@@ -103,10 +107,13 @@ export default function Users() {
       padding: "3px",
     },
     "& .card .company": {
-      border: "1px solid #ededed",
+      border: "1px solid #adadad",
       padding: " 5px",
       borderRadius: "5px",
     },
+    "& .card .company:hover":{
+      boxShadow: " 0px 0px 10px #aaaaaa"
+    }
   });
 
   return (
