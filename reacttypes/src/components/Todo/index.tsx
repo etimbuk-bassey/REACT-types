@@ -7,7 +7,7 @@ export default function Todo() {
   const [items, setItems] = useState<string[]>([]);
   const [item, setItem] = useState("");
   const [hide, setHide] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [next, setNext] = useState(true);
   const addItem = (value: string) => {
     setItems((prev) => [...prev, value]);
   };
@@ -73,7 +73,7 @@ export default function Todo() {
   return (
     <div className={`container ${Styles}`}>
       <h1 className="heading-text">TO-DO LIST</h1>
-      {loading ? (
+      {next ? (
         <div className="div-start">
           <div className="img-div">
             <img src="/images/undraw_Mail_sent_re_0ofv.png" alt="task-image" />
@@ -81,7 +81,7 @@ export default function Todo() {
           <button
             className="start-btn"
             onClick={() => {
-              setLoading(false);
+              setNext(false);
             }}
           >
             Add Tasks
