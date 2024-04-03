@@ -8,9 +8,13 @@ export default function Todo() {
   const [item, setItem] = useState("");
   const [hide, setHide] = useState(true);
   const [next, setNext] = useState(true);
+  const [edit, setEdit] = useState(true);
+  const [selItemId, setSelItemId] = useState(-1);
+
   const addItem = (value: string) => {
     setItems((prev) => [...prev, value]);
   };
+
   console.log(items, "items");
 
   const Styles = css({
@@ -67,6 +71,47 @@ export default function Todo() {
       width: "400px",
       padding: "0px",
       margin: "10px auto",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    "& .task .taskitem": {
+      marginLeft: "10px",
+    },
+    "& .task .icon": {
+      marginRight: "10px",
+      background: "#eee",
+      padding: "10px",
+      borderRadius: "5px",
+      boxShadow: "0px 0px 10px #bebebe",
+    },
+    "& .task .del-icon": {
+      background: "#DA0816",
+      padding: "3px",
+      borderRadius: "5px",
+      cursor: "pointer",
+      marginLeft: "10px",
+    },
+    "& .task .del-icon:hover": {
+      background: "#A60303",
+    },
+    "& .task .edit-icon": {
+      padding: "3px",
+      borderRadius: "5px",
+      cursor: "pointer",
+    },
+    "& .task .edit-icon:hover": {
+      background: "#C7C7C9",
+    },
+    "& .edit-input": {
+      border: "1px solid #090348",
+      borderRadius: "3px",
+      width: "370px",
+      padding: "13px",
+      margin: "10px auto",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
     },
   });
 
@@ -91,53 +136,121 @@ export default function Todo() {
         <div>
           <div>
             {items.map((task, id) => (
-              <div className="task" key={id}>
-                <p className="taskitem" >
-                  <span>🎫</span>
-                  {task}
-                </p>
+              <div
+                key={id}
+                onClick={() => {
+                  setSelItemId(id);
+                }}
+              >
+                
+                {edit ? (
+                  <div className="task">
+                    <p className="taskitem">
+                      <span>🎫</span>
+                      {task}
+                    </p>
+
+                    <div className="icon">
+                      <span
+                        className="edit-icon"
+                        onClick={() => {
+                          setEdit(false);
+                          setItem(task);
+                          setHide(false)
+                        }}
+                      >
+                        🖊️
+                      </span>
+
+                      <span
+                        className="del-icon"
+                        onClick={() => {
+                          const updatedItem = items.filter((i) => i != task);
+                          setItems(updatedItem);
+                          setHide(false)
+                        }}
+                      >
+                        🗑️
+                      </span>
+                    </div>
+                  </div>
+                ) : selItemId === id ? (
+                  <div className="edit-input">
+                    <input
+                      value={item}
+                      type="text"
+                      placeholder="........."
+                      onInput={(e) => {
+                        setItem(e.target.value);
+                      }}
+                    />
+                    <button
+                      className="can-btn"
+                      onClick={() => {
+                        setEdit(true);
+                        setHide(false)
+                      }}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="sub-btn"
+                      onClick={() => {
+                        setEdit(true);
+                        setHide(false)
+                        setItems((prev) => {
+                          const temp = [...prev];
+                          temp[id] = item;
+                          return temp;
+                        });
+                        setItem("");
+                      }}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                ) : null}
               </div>
             ))}
           </div>
-
           {hide ? (
-                <div className="div-inputs">
-                <input
-                  value={item}
-                  type="text"
-                  placeholder="what are you up to..."
-                  onInput={(e) => {
-                    setItem(e.target.value);
-                  }}
-                />
-  
-                <button
-                  className="can-btn"
-                  onClick={() => {
-                    // setLoading(true);
-                    setHide(false);
-                    setItem("");
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="sub-btn"
-                  onClick={() => {
-                    addItem(item);
-                    setItem("");
-                    // setLoading(true);
-                    setHide(false);
-                  }}
-                >
-                  Submit
-                </button>
-              </div>
+            <div className="div-inputs">
+              <input
+                value={item}
+                type="text"
+                placeholder="what are you up to...😒"
+                onInput={(e) => {
+                  setItem(e.target.value);
+                }}
+              />
+
+              <button
+                className="can-btn"
+                onClick={() => {
+                  setHide(false);
+                  setItem("");
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="sub-btn"
+                onClick={() => {
+                  addItem(item);
+                  setItem("");
+                  setHide(false);
+                }}
+              >
+                Submit
+              </button>
+            </div>
           ) : (
             <button
               className="start-btn"
               onClick={() => {
                 setHide(true);
+                setEdit(true);
+                setItem("")
               }}
             >
               New Tasks
