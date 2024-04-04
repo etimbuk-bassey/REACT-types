@@ -68,9 +68,9 @@ export default function Todo() {
     "& .task": {
       border: "1px solid #090348",
       borderRadius: "3px",
-      width: "400px",
+      // width: "400px",
       padding: "0px",
-      margin: "10px auto",
+      margin: "10px 50px",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
