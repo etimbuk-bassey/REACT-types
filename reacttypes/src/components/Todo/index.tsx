@@ -142,7 +142,6 @@ export default function Todo() {
                   setSelItemId(id);
                 }}
               >
-                
                 {edit ? (
                   <div className="task">
                     <p className="taskitem">
@@ -156,7 +155,7 @@ export default function Todo() {
                         onClick={() => {
                           setEdit(false);
                           setItem(task);
-                          setHide(false)
+                          setHide(false);
                         }}
                       >
                         🖊️
@@ -167,7 +166,7 @@ export default function Todo() {
                         onClick={() => {
                           const updatedItem = items.filter((i) => i != task);
                           setItems(updatedItem);
-                          setHide(false)
+                          setHide(false);
                         }}
                       >
                         🗑️
@@ -188,7 +187,7 @@ export default function Todo() {
                       className="can-btn"
                       onClick={() => {
                         setEdit(true);
-                        setHide(false)
+                        setHide(false);
                       }}
                     >
                       Cancel
@@ -197,7 +196,7 @@ export default function Todo() {
                       className="sub-btn"
                       onClick={() => {
                         setEdit(true);
-                        setHide(false)
+                        setHide(false);
                         setItems((prev) => {
                           const temp = [...prev];
                           temp[id] = item;
@@ -250,7 +249,7 @@ export default function Todo() {
               onClick={() => {
                 setHide(true);
                 setEdit(true);
-                setItem("")
+                setItem("");
               }}
             >
               New Tasks
