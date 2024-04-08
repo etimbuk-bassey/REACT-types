@@ -11,7 +11,7 @@ export default function Todo() {
   const [edit, setEdit] = useState(1);
   const [line, setLine] = useState("none");
   const [editHide, setEditHide] = useState(" ");
-  const [done, setDone] = useState(1);
+  const [done, setDone] = useState(-1);
 
   const addItem = (value: string) => {
     setItems((prev) => [...prev, value]);
@@ -34,7 +34,7 @@ export default function Todo() {
 
     "& .heading-text": {
       color: "#090348",
-      margin: "20px"
+      margin: "20px",
     },
     "& button": {
       background: "#090348",
@@ -140,47 +140,85 @@ export default function Todo() {
           <div>
             {items.map((task, id) => (
               <div key={id}>
-                { edit !== id ? (
-                  <div className="task">
-                    <p
-                      className="taskitem"
-                      style={{ textDecoration: `${line}` }}
-                    >
-                      <input
-                        type="checkbox"
-                        onClick={() => {
-                          setLine(line === "none" ? "line-through" : "none");
-                          setEditHide(editHide === " " ? "none" : " ");
-                        }}
-                      />
-                      {task}
-                    </p>
+                {edit !== id ? (
+                  done !== id ? (
+                    <div className="task">
+                      <p className="taskitem" style={{ textDecoration: " " }}>
+                        <input
+                          type="checkbox"
+                          onChange={() => {
+                            setDone(id);
+                          }}
+                        />
+                        {task}
+                      </p>
 
-                    <div className="icon">
-                      <span
-                        className="edit-icon"
-                        style={{ display: `${editHide}` }}
-                        onClick={() => {
-                          setEdit(id);
-                          setItem(task);
-                          setHide(false);
-                        }}
-                      >
-                        🖊️
-                      </span>
+                      <div className="icon">
+                        <span
+                          className="edit-icon"
+                          style={{ display: " " }}
+                          onClick={() => {
+                            setEdit(id);
+                            setItem(task);
+                            setHide(false);
+                          }}
+                        >
+                          🖊️
+                        </span>
 
-                      <span
-                        className="del-icon"
-                        onClick={() => {
-                          const updatedItem = items.filter((i) => i != task);
-                          setItems(updatedItem);
-                          setHide(false);
-                        }}
-                      >
-                        🗑️
-                      </span>
+                        <span
+                          className="del-icon"
+                          onClick={() => {
+                            const updatedItem = items.filter((i) => i != task);
+                            setItems(updatedItem);
+                            setHide(false);
+                          }}
+                        >
+                          🗑️
+                        </span>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="task">
+                      <p
+                        className="taskitem"
+                        style={{ textDecoration: "line-through" }}
+                      >
+                        <input
+                          type="checkbox"
+                          onChange={() => {
+                            setDone(done === id);
+                          }}
+                        />
+                        {task}
+                      </p>
+
+                      <div className="icon">
+                        <span
+                          className="edit-icon"
+                          style={{ display: "none" }}
+                          onClick={() => {
+                            setEdit(id);
+                            setItem(task);
+                            setHide(false);
+                          }}
+                        >
+                          🖊️
+                        </span>
+
+                        <span
+                          className="del-icon"
+                          onClick={() => {
+                            const updatedItem = items.filter((i) => i != task);
+                            setItems(updatedItem);
+                            setHide(false);
+                          }}
+                        >
+                          🗑️
+                        </span>
+                      </div>
+                    </div>
+                  )
                 ) : (
                   <div className="edit-input">
                     <input
