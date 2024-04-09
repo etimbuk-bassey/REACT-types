@@ -1,20 +1,42 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { css } from "@emotion/css";
 import React, { useState } from "react";
-React;
+
+interface IUser {
+  title: string;
+  status?: boolean;
+  id: number;
+}
 
 export default function Todo() {
-  const [items, setItems] = useState<string[]>([]);
+  const [items, setItems] = useState<IUser[]>([
+    // { id: 1, title: "task 1", status: false },
+    // { id: 2, title: "task 2", status: false },
+  ]);
   const [item, setItem] = useState("");
   const [hide, setHide] = useState(true);
   const [next, setNext] = useState(true);
-  const [edit, setEdit] = useState(1);
-  const [line, setLine] = useState("none");
-  const [editHide, setEditHide] = useState(" ");
-  const [done, setDone] = useState(-1);
+  const [edit, setEdit] = useState(-1);
+  const [line, setLine] = useState("line-through");
 
-  const addItem = (value: string) => {
-    setItems((prev) => [...prev, value]);
+  const addItem = ( ) => {
+    // setItems((prev) => [...prev, value]);
+    if (item) {
+      const num = items.length + 1;
+      const newEntry = { id: num, title: item, status: false };
+      setItems([...items, newEntry]);
+      setItem(" ");
+    }
+  };
+
+  const markDone = (id: number) => {
+    const setMarkDone = items.map((item) => {
+      if (item.id === id) {
+        return { ...item, status: !item.status };
+      }
+      return item;
+    });
+    setItems(setMarkDone);
   };
 
   console.log(items, "items");
@@ -138,33 +160,41 @@ export default function Todo() {
       ) : (
         <div>
           <div>
-            {items.map((task, id) => (
-              <div key={id}>
-                {edit !== id ? (
-                  done !== id ? (
+            {items &&
+              items.map((task, id) => (
+                <div key={task.id}>
+                  {edit !== id ? (
                     <div className="task">
-                      <p className="taskitem" style={{ textDecoration: " " }}>
+                      <p
+                        className="taskitem"
+                        style={{
+                          textDecoration: `${task.status ? `${line}` : " "}`,
+                        }}
+                      >
                         <input
                           type="checkbox"
-                          onChange={() => {
-                            setDone(id);
+                          onClick={() => {
+                            markDone(task.id);
+                            setLine("line-through");
                           }}
                         />
-                        {task}
+                        {task.title}
                       </p>
 
                       <div className="icon">
-                        <span
-                          className="edit-icon"
-                          style={{ display: " " }}
-                          onClick={() => {
-                            setEdit(id);
-                            setItem(task);
-                            setHide(false);
-                          }}
-                        >
-                          🖊️
-                        </span>
+                        {task.status ? null : (
+                          <span
+                            className="edit-icon"
+                            style={{ display: " " }}
+                            onClick={() => {
+                              setEdit(id);
+                              setItem(task.title);
+                              setHide(false);
+                            }}
+                          >
+                            🖊️
+                          </span>
+                        )}
 
                         <span
                           className="del-icon"
@@ -179,84 +209,57 @@ export default function Todo() {
                       </div>
                     </div>
                   ) : (
-                    <div className="task">
-                      <p
-                        className="taskitem"
-                        style={{ textDecoration: "line-through" }}
+                    <div className="edit-input">
+                      <input
+                        value={item}
+                        type="text"
+                        placeholder="........."
+                        onInput={(e) => {
+                          setItem(e.target.value);
+                        }}
+                      />
+                      <button
+                        className="can-btn"
+                        onClick={() => {
+                          setEdit(-1);
+                          setHide(false);
+                        }}
                       >
-                        <input
-                          type="checkbox"
-                          onChange={() => {
-                            setDone(done === id);
-                          }}
-                        />
-                        {task}
-                      </p>
+                        Cancel
+                      </button>
+                      <button
+                        title="save"
+                        className="sub-btn"
+                        onClick={() => {
+                          if (item.trim() !== "" ? item : alert("Please Input a task")) {
+                            setItems((prev) => {
+                              const temp = [...prev];
+                              const currIndex = temp.findIndex(
+                                (tem) => tem.id === task.id
+                              );
+                              temp[currIndex] = {
+                                ...temp[currIndex],
+                                title: item,
+                              };
+                              return temp;
+                            });
+                          }
 
-                      <div className="icon">
-                        <span
-                          className="edit-icon"
-                          style={{ display: "none" }}
-                          onClick={() => {
-                            setEdit(id);
-                            setItem(task);
-                            setHide(false);
-                          }}
-                        >
-                          🖊️
-                        </span>
-
-                        <span
-                          className="del-icon"
-                          onClick={() => {
-                            const updatedItem = items.filter((i) => i != task);
-                            setItems(updatedItem);
-                            setHide(false);
-                          }}
-                        >
-                          🗑️
-                        </span>
-                      </div>
+                          if (item !== ""){
+                            setEdit(-1);
+                          }
+                          else setEdit(id)
+                          
+                          setHide(false);
+                          setItem(" ");
+                        }}
+                      >
+                        Save
+                      </button>
                     </div>
-                  )
-                ) : (
-                  <div className="edit-input">
-                    <input
-                      value={item}
-                      type="text"
-                      placeholder="........."
-                      onInput={(e) => {
-                        setItem(e.target.value);
-                      }}
-                    />
-                    <button
-                      className="can-btn"
-                      onClick={() => {
-                        setEdit(edit === id);
-                        setHide(false);
-                      }}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="sub-btn"
-                      onClick={() => {
-                        setEdit(edit === id);
-                        setHide(false);
-                        setItems((prev) => {
-                          const temp = [...prev];
-                          temp[id] = item;
-                          return temp;
-                        });
-                        setItem("");
-                      }}
-                    >
-                      Save
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
+                  )}
+                </div>
+              ))}
           </div>
           {hide ? (
             <div className="div-inputs">
@@ -294,7 +297,7 @@ export default function Todo() {
               className="start-btn"
               onClick={() => {
                 setHide(true);
-                setEdit(true);
+                // setEdit(true);
                 setItem("");
               }}
             >
