@@ -1,6 +1,7 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaUser } from "react-icons/fa";
+import { FaDownload } from "react-icons/fa6";
 
 React;
 
@@ -21,6 +22,13 @@ export default function Class() {
       border: "1px solid #D9F5DC",
       width: "200px",
       background: "#D9F5DC",
+    },
+    "& .user-icon p":{
+      textAlign: "center",
+      alignItems:"center",
+      justifyContent: "center",
+      margin: "60px auto",
+      color: "#087714"
     },
     "& .text-content .p1": {
       marginTop: "10px",
@@ -52,7 +60,7 @@ export default function Class() {
   return (
     <div className={`container ${styles}`}>
       <div className="user-icon">
-        <FontAwesomeIcon icon="fa-solid fa-user" />
+        <p><FaUser style={{width:"60px", height: "50px"}} /></p>
       </div>
       <div className="text-content">
         <h3>Upload Your Red Background Passport Photograph</h3>
@@ -60,6 +68,7 @@ export default function Class() {
         <p className="p2">.jpeg .jpg .png</p>
         <div className="btn">
           <button className="btn-browse">
+            <FaDownload style={{width:"30px", height: "15px", color: "#087714"}}/>
             Click to browse or Drag file in here
           </button>
           <button className="btn-upload">Upload</button>
