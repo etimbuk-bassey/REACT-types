@@ -266,7 +266,7 @@ export default function Todo() {
               <input
                 value={item}
                 type="text"
-                placeholder="what are you up to...😒"
+                placeholder="what are you up to...😒📝"
                 onInput={(e:ChangeEvent<HTMLInputElement>) => {
                   setItem(e.target.value);
                 }}
