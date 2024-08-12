@@ -6,8 +6,8 @@ import Todo from "./components/Todo";
 function App() {
   return (
     <>
-      {/* <Todo /> */}
-      <Users />
+      <Todo />
+      {/* <Users /> */}
 
       {/* <Class /> */}
     </>

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { css } from "@emotion/css";
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 
 interface IUser {
   title: string;
@@ -214,7 +214,7 @@ export default function Todo() {
                         value={item}
                         type="text"
                         placeholder="........."
-                        onInput={(e) => {
+                        onInput={(e : ChangeEvent<HTMLInputElement>) => {
                           setItem(e.target.value);
                         }}
                       />
@@ -267,7 +267,7 @@ export default function Todo() {
                 value={item}
                 type="text"
                 placeholder="what are you up to...😒"
-                onInput={(e) => {
+                onInput={(e:ChangeEvent<HTMLInputElement>) => {
                   setItem(e.target.value);
                 }}
               />
